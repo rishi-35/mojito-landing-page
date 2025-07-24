@@ -7,12 +7,18 @@
     src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
 }
 
+
 @theme {
     --color-yellow: #e7d393;
     --color-white-100: #efefef;
     --font-sans: "Mona Sans", sans-serif;
     --font-modern-negra: "Modern Negra", sans-serif;
     --font-serif: "DM Serif Text", serif;
+}
+
+nav {
+  @apply px-3 py-3;         /* default */
+  @apply lg:px-[23px] lg:py-3; /* above 1024px */
 }
 
 html,
