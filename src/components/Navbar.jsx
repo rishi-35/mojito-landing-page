@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { navLinks } from "../../constants";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -10,56 +10,39 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   const navRef = useRef(null);
-  const containerRef = useRef(null); // Reference for the scrollable content
+  const containerRef = useRef(null);
 
   useGSAP(() => {
-    const animation = gsap.fromTo(
+    gsap.fromTo(
       navRef.current,
+      { background: "transparent", backdropFilter: "blur(0px)" },
       {
-        backgroundColor: "transparent",
-        backdropFilter: "blur(0px)",
-      },
-      {
-        backgroundColor: "#00000050",
+        background: "#00000050",
         backdropFilter: "blur(10px)",
         duration: 1,
         ease: "power1.inOut",
         scrollTrigger: {
-          trigger: containerRef.current || document.body, // Use body or content as trigger
-          start: "top 10%", // Trigger when 10% of the page is scrolled
-          end: "top -10%", // End when near the top again
-          toggleActions: "play none reverse none", // Play on scroll down, reverse on scroll up
-          invalidateOnRefresh: true, // Recalculate trigger points on scroll refresh
-          // markers: true, // Uncomment for debug markers
+          trigger: document.documentElement,
+          start: "top 10%",
+          end: "top top",
+          toggleActions: "play none reverse none",
+          invalidateOnRefresh: true,
         },
       }
     );
-
-    // Optional: Refresh ScrollTrigger on scroll to ensure dynamic recalculation
-    ScrollTrigger.addEventListener("scroll", () => {
-      ScrollTrigger.refresh();
-    });
-
-    return () => {
-      // Cleanup: Kill the animation and ScrollTrigger on unmount
-      animation.kill();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
   }, []);
 
-  // Ensure the page is scrollable
   return (
-    <div ref={containerRef} >
+    <div ref={containerRef}>
       <nav
         ref={navRef}
-        style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}
+        style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000, overflow: "hidden" }}
       >
         <div className="container mx-auto px-4 py-2 flex justify-between items-center">
           <a href="#" className="flex items-center gap-2">
-            <img src="/images/logo.png" alt="logo" />
+            <img src="/images/logo.png" alt="logo" style={{ maxWidth: "100%", height: "auto" }} />
             <p>Velvet Pour</p>
           </a>
-
           <ul className="flex space-x-4">
             {navLinks.map((link) => (
               <li key={link.id}>
